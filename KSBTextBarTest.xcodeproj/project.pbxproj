@@ -20,9 +20,9 @@
 		F233DD131802FB240088EBEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F233DD111802FB240088EBEE /* InfoPlist.strings */; };
 		F233DD151802FB240088EBEE /* KSBTextBarTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F233DD141802FB240088EBEE /* KSBTextBarTestTests.m */; };
 		F233DD201802FD580088EBEE /* TextBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F233DD1F1802FD580088EBEE /* TextBarViewController.m */; };
-		F233DD231802FE6D0088EBEE /* KSBTextbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F233DD221802FE6D0088EBEE /* KSBTextbar.m */; };
-		F233DD261802FFC50088EBEE /* upbutton_inputbox.png in Resources */ = {isa = PBXBuildFile; fileRef = F233DD241802FFC50088EBEE /* upbutton_inputbox.png */; };
-		F233DD271802FFC50088EBEE /* upbutton_inputbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F233DD251802FFC50088EBEE /* upbutton_inputbox@2x.png */; };
+		F233DD38180354370088EBEE /* KSBTextbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F233DD34180354370088EBEE /* KSBTextbar.m */; };
+		F233DD39180354370088EBEE /* upbutton_inputbox.png in Resources */ = {isa = PBXBuildFile; fileRef = F233DD36180354370088EBEE /* upbutton_inputbox.png */; };
+		F233DD3A180354370088EBEE /* upbutton_inputbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F233DD37180354370088EBEE /* upbutton_inputbox@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,10 +54,10 @@
 		F233DD141802FB240088EBEE /* KSBTextBarTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSBTextBarTestTests.m; sourceTree = "<group>"; };
 		F233DD1E1802FD580088EBEE /* TextBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBarViewController.h; sourceTree = "<group>"; };
 		F233DD1F1802FD580088EBEE /* TextBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextBarViewController.m; sourceTree = "<group>"; };
-		F233DD211802FE6C0088EBEE /* KSBTextbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBTextbar.h; sourceTree = "<group>"; };
-		F233DD221802FE6D0088EBEE /* KSBTextbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSBTextbar.m; sourceTree = "<group>"; };
-		F233DD241802FFC50088EBEE /* upbutton_inputbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upbutton_inputbox.png; sourceTree = "<group>"; };
-		F233DD251802FFC50088EBEE /* upbutton_inputbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upbutton_inputbox@2x.png"; sourceTree = "<group>"; };
+		F233DD33180354370088EBEE /* KSBTextbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBTextbar.h; sourceTree = "<group>"; };
+		F233DD34180354370088EBEE /* KSBTextbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSBTextbar.m; sourceTree = "<group>"; };
+		F233DD36180354370088EBEE /* upbutton_inputbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upbutton_inputbox.png; sourceTree = "<group>"; };
+		F233DD37180354370088EBEE /* upbutton_inputbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upbutton_inputbox@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,15 +117,14 @@
 		F233DCF51802FB230088EBEE /* KSBTextBarTest */ = {
 			isa = PBXGroup;
 			children = (
-				F233DD31180353520088EBEE /* Resources */,
+				F233DD32180354370088EBEE /* Classes */,
+				F233DD35180354370088EBEE /* Resources */,
 				F233DCFE1802FB230088EBEE /* AppDelegate.h */,
 				F233DCFF1802FB230088EBEE /* AppDelegate.m */,
 				F233DD011802FB230088EBEE /* Images.xcassets */,
 				F233DCF61802FB230088EBEE /* Supporting Files */,
 				F233DD1E1802FD580088EBEE /* TextBarViewController.h */,
 				F233DD1F1802FD580088EBEE /* TextBarViewController.m */,
-				F233DD211802FE6C0088EBEE /* KSBTextbar.h */,
-				F233DD221802FE6D0088EBEE /* KSBTextbar.m */,
 			);
 			path = KSBTextBarTest;
 			sourceTree = "<group>";
@@ -159,13 +158,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		F233DD31180353520088EBEE /* Resources */ = {
+		F233DD32180354370088EBEE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				F233DD241802FFC50088EBEE /* upbutton_inputbox.png */,
-				F233DD251802FFC50088EBEE /* upbutton_inputbox@2x.png */,
+				F233DD33180354370088EBEE /* KSBTextbar.h */,
+				F233DD34180354370088EBEE /* KSBTextbar.m */,
 			);
-			name = Resources;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		F233DD35180354370088EBEE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F233DD36180354370088EBEE /* upbutton_inputbox.png */,
+				F233DD37180354370088EBEE /* upbutton_inputbox@2x.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,8 +253,8 @@
 			files = (
 				F233DCFA1802FB230088EBEE /* InfoPlist.strings in Resources */,
 				F233DD021802FB230088EBEE /* Images.xcassets in Resources */,
-				F233DD271802FFC50088EBEE /* upbutton_inputbox@2x.png in Resources */,
-				F233DD261802FFC50088EBEE /* upbutton_inputbox.png in Resources */,
+				F233DD3A180354370088EBEE /* upbutton_inputbox@2x.png in Resources */,
+				F233DD39180354370088EBEE /* upbutton_inputbox.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F233DD201802FD580088EBEE /* TextBarViewController.m in Sources */,
-				F233DD231802FE6D0088EBEE /* KSBTextbar.m in Sources */,
+				F233DD38180354370088EBEE /* KSBTextbar.m in Sources */,
 				F233DD001802FB230088EBEE /* AppDelegate.m in Sources */,
 				F233DCFC1802FB230088EBEE /* main.m in Sources */,
 			);
