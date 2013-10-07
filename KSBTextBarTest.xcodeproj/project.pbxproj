@@ -117,8 +117,7 @@
 		F233DCF51802FB230088EBEE /* KSBTextBarTest */ = {
 			isa = PBXGroup;
 			children = (
-				F233DD241802FFC50088EBEE /* upbutton_inputbox.png */,
-				F233DD251802FFC50088EBEE /* upbutton_inputbox@2x.png */,
+				F233DD31180353520088EBEE /* Resources */,
 				F233DCFE1802FB230088EBEE /* AppDelegate.h */,
 				F233DCFF1802FB230088EBEE /* AppDelegate.m */,
 				F233DD011802FB230088EBEE /* Images.xcassets */,
@@ -158,6 +157,15 @@
 				F233DD111802FB240088EBEE /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F233DD31180353520088EBEE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F233DD241802FFC50088EBEE /* upbutton_inputbox.png */,
+				F233DD251802FFC50088EBEE /* upbutton_inputbox@2x.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -461,6 +469,7 @@
 				F233DD1A1802FB240088EBEE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F233DD1B1802FB240088EBEE /* Build configuration list for PBXNativeTarget "KSBTextBarTestTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +478,7 @@
 				F233DD1D1802FB240088EBEE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
