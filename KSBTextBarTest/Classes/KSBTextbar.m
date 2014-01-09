@@ -8,43 +8,44 @@
 
 #import "KSBTextbar.h"
 
-#define margin 12
-#define fontSize 15
-#define gap 18
+#define MARGIN 12
+#define FONTSIZE 15
+#define GAP 20
+#define INSET 8
+#define LIMITHEIGHT 9999
 
 @implementation KSBTextbar
 
 @synthesize tv;
 @synthesize backView;
 @synthesize upBtn;
-@synthesize isNewLine;
-@synthesize gapHeight, minHeight, defaultY;
-@synthesize count, returnTotal;
+@synthesize minHeight, defaultY;
+@synthesize maxLine, num;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        isNewLine = NO;
-        gapHeight = 0;
-        returnTotal = 0;
-        count = 1;
+        maxLine = 3;
+        defaultY = frame.origin.y;
         
         UIImage *upImage = [UIImage imageNamed:@"upbutton_inputbox.png"];
         
         upBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         upBtn.frame = CGRectMake(0, 0, upImage.size.width, upImage.size.height);
+        [upBtn addTarget:self action:@selector(upBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
         [upBtn setImage:upImage forState:UIControlStateNormal];
         
         UIBarButtonItem *upItem = [[UIBarButtonItem alloc] initWithCustomView:upBtn];
         [upBtn retain];
         
-        backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width-(margin*3)-upImage.size.width, frame.size.height-(margin/2))];
-        tv = [[UITextView alloc] initWithFrame:CGRectMake(0, 8, frame.size.width-(margin*3)-upImage.size.width, gap)];
+        backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width-(MARGIN*3)-upImage.size.width, frame.size.height-MARGIN)];
+        tv = [[UITextView alloc] initWithFrame:CGRectMake(0, 8, frame.size.width-(MARGIN*3)-upImage.size.width, GAP)];
         tv.delegate = self;
-        tv.font = [UIFont systemFontOfSize:fontSize];
-        [tv setContentInset:UIEdgeInsetsMake(-8, 0, -8, 0)];
+        tv.font = [UIFont systemFontOfSize:FONTSIZE];
+        [tv setContentInset:UIEdgeInsetsMake(-INSET, 0, -INSET, 0)];
+
         
         minHeight = backView.frame.size.height;
         
@@ -56,98 +57,124 @@
         [textItem release];
         [upItem release];
     }
+    
     return self;
 }
 
-- (void) goToBottom
-{
-    NSUInteger length = self.tv.text.length;
-    self.tv.selectedRange = NSMakeRange(length, 0);
-    
-    [tv setContentOffset:CGPointMake(length, 0) animated:YES];
+- (void)makeDefaultState {
+    backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, backView.frame.size.width, minHeight);
+    tv.frame = CGRectMake(tv.frame.origin.x, tv.frame.origin.y, tv.frame.size.width, GAP);
+    self.frame = CGRectMake(self.frame.origin.x, defaultY, self.frame.size.width, minHeight+MARGIN);
+    num = 0;
+    tv.text = @"";
+}
+
+- (void)setMaxLine:(int)aMaxLine {
+    self.maxLine = aMaxLine;
+}
+
+- (void)upBtnPressed:(id)sender {
+    // Send notification to your controller
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"upBtnPressed" object:nil];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    defaultY = self.frame.origin.y;
+    if(num > 1) {
+        defaultY = self.frame.origin.y + (GAP*(num-1));
+    }
+    else {
+        defaultY = self.frame.origin.y;
+    }
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    if(!textView.hasText || textView.contentSize.height <= minHeight) {
-        backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, backView.frame.size.width, minHeight);
-        textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, textView.frame.size.width, gap);
-        self.frame = CGRectMake(self.frame.origin.x, defaultY, self.frame.size.width, minHeight+margin/2);
-        gapHeight = 0;
-        count = 1;
+    float backSize = 0, textSize = 0, selfSize = 0, selfY;
+
+    float height = [self measureHeightOfUITextView:textView];
+
+    // Each letter of text in textview has different size. So I decided minumsize (GAP-4).
+    // 16 = backview.frame.size.height - textview.frame.size.height
+    int lineNum = (height-16) / (GAP-4);
+    num = lineNum;
+    
+    if(lineNum > maxLine) {
+        num = maxLine;
+    }
+    
+    backSize = minHeight + (GAP*(num-1));
+    textSize = GAP + (GAP*(num-1));
+    selfSize = minHeight + (GAP*(num-1)) + MARGIN;
+    selfY = defaultY - (GAP*(num-1));
+    
+    backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, backView.frame.size.width, backSize);
+    textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, textView.frame.size.width, textSize);
+    self.frame = CGRectMake(self.frame.origin.x, selfY, self.frame.size.width, selfSize);
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        [textView setContentOffset:CGPointZero animated:NO];
+        [textView setContentOffset:CGPointMake(0, height-textSize-8) animated:NO];
     }
     else {
-        int result = [self countReturn];
-        if(returnTotal > result) {
-            returnTotal = result;
-            textView.contentSize = CGSizeMake(0, textView.contentSize.height-gap);
+        CGRect r = [textView caretRectForPosition:textView.selectedTextRange.end];
+        CGFloat caretY =  MAX(r.origin.y - textView.frame.size.height + r.size.height -1, 0);
+        if(textView.contentOffset.y < caretY && r.origin.y != INFINITY)
+            textView.contentOffset = CGPointMake(0, MIN(caretY, textView.contentSize.height));
+    }
+}
+
+// I got this method from http://stackoverflow.com/questions/19046969/uitextview-content-size-different-in-ios7
+- (CGFloat)measureHeightOfUITextView:(UITextView *)textView
+{
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
+    {
+        // This is the code for iOS 7. contentSize no longer returns the correct value, so
+        // we have to calculate it.
+        //
+        // This is partly borrowed from HPGrowingTextView, but I've replaced the
+        // magic fudge factors with the calculated values (having worked out where
+        // they came from)
+        
+        CGRect frame = textView.bounds;
+        
+        // Take account of the padding added around the text.
+        
+        UIEdgeInsets textContainerInsets = textView.textContainerInset;
+        UIEdgeInsets contentInsets = textView.contentInset;
+        
+        CGFloat leftRightPadding = textContainerInsets.left + textContainerInsets.right + textView.textContainer.lineFragmentPadding * 2 + contentInsets.left + contentInsets.right;
+        CGFloat topBottomPadding = textContainerInsets.top + textContainerInsets.bottom + contentInsets.top + contentInsets.bottom;
+        
+        frame.size.width -= leftRightPadding;
+        frame.size.height -= topBottomPadding;
+        
+        NSString *textToMeasure = textView.text;
+        if ([textToMeasure hasSuffix:@"\n"])
+        {
+            textToMeasure = [NSString stringWithFormat:@"%@-", textView.text];
         }
         
-        float delta = textView.contentSize.height - minHeight;
-        if(gapHeight < delta) {
-            if(count < 3) {
-                count++;
-                gapHeight = delta;
-                backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, backView.frame.size.width, textView.contentSize.height);
-                textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, textView.frame.size.width, gap*count);
-                self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y-gap, self.frame.size.width, textView.contentSize.height+margin/2);
-            }
-            else {
-                NSRange range = NSMakeRange(textView.text.length - 1, 1);
-                [textView scrollRangeToVisible:range];
-            }
-        }
-        else if(gapHeight > delta) {
-            if(count > 1) {
-                count--;
-                gapHeight = delta;
-                backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, backView.frame.size.width, textView.contentSize.height);                
-                textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, textView.frame.size.width, gap*count);
-                self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y+gap, self.frame.size.width, textView.contentSize.height+margin/2);
-            }
-        }
+        // NSString class method: boundingRectWithSize:options:attributes:context is
+        // available only on ios7.0 sdk.
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
+        
+        NSDictionary *attributes = @{ NSFontAttributeName: textView.font, NSParagraphStyleAttributeName : paragraphStyle };
+        
+        CGRect size = [textToMeasure boundingRectWithSize:CGSizeMake(CGRectGetWidth(frame), MAXFLOAT)
+                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                               attributes:attributes
+                                                  context:nil];
+        
+        CGFloat measuredHeight = ceilf(CGRectGetHeight(size) + topBottomPadding);
+        return measuredHeight + 16;
+    }
+    else
+    {
+        CGSize size = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, LIMITHEIGHT)];
+        return size.height;
     }
 }
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-
-    if(textView.text.length == 0) {
-        backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, backView.frame.size.width, textView.contentSize.height);
-        textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, textView.frame.size.width, gap);
-        self.frame = CGRectMake(self.frame.origin.x, defaultY, self.frame.size.width, minHeight+margin/2);
-        gapHeight = 0;
-        count = 1;
-    }
-    
-    if([text isEqualToString:@"\n"]) {
-        if(count < 3) {
-            textView.contentSize = CGSizeMake(0, textView.contentSize.height+gap);
-        }
-        else {
-            textView.contentOffset = CGPointMake(0, gap*(returnTotal+1));
-        }
-    }
-    
-    returnTotal = [self countReturn];
-    
-    return YES;
-}
-
-- (int)countReturn {
-    NSString *thestring = tv.text;
-    int returnint = 0;
-    
-    for (int temp = 0; temp < [thestring length]; temp++){
-        if ([thestring characterAtIndex: temp] == '\n')
-            returnint++;
-    }
-    
-    return returnint;
-}
-
 
 - (void)dealloc {
     [backView release];

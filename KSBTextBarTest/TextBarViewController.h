@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "KSBTextbar.h"
 
-@interface TextBarViewController : UIViewController {
+@interface TextBarViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
     KSBTextbar *textBar;
+    UITableView *textList;
+    NSMutableArray *textArray;
 }
 
 @property (nonatomic, retain) KSBTextbar *textBar;
+@property (nonatomic, retain) UITableView *textList;
+@property (nonatomic, retain) NSMutableArray *textArray;
 
 @end
