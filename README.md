@@ -9,7 +9,6 @@ Usage
 1. Copy KSBTextbar.h, KSBTextbar.m to your project.
 
 "`
-#define barHeight 48;
 
 //...
 
