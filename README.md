@@ -6,10 +6,10 @@ Growing UITextView In UIToolbar like SMS.
 Usage
 ==========
 
-1. Copy KSBTextbar.h, KSBTextbar.m to your project.
-2. Create the object in viewDidUnload method.
+* First, copy KSBTextbar.h, KSBTextbar.m to your project.
+* Second, create the object in viewDidUnload method.
 
-```
+```Objective-C
 #define barHeight 48;
 
 - (void)viewDidUnLoad {
@@ -22,9 +22,10 @@ Usage
   [self.view addSubview:textBar];
 }
 ```
-* KSBTextbar has already button action. So you have to register notification in your controller.
 
-```
+* Third, KSBTextbar has already button action. So you have to register notification in your controller.
+
+```Objective-C
 
 - (void)viewDidLoad {
   
@@ -46,10 +47,10 @@ Usage
 }
 ```
 
-* If textview in the KSBTextbar object has focus, keyboard will show. Otherwise, keyboard will hide. 
+* Last, if textview in the KSBTextbar object has focus, keyboard will show. Otherwise, keyboard will hide. 
    So you have to change the KSBTextBar object's offset. Please register notification related with UIKeyboard.
 
-```
+```Objective-C
 
 #define keyboardHeight 216
 
