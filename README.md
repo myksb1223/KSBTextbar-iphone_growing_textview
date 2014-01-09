@@ -22,7 +22,7 @@ Usage
   [self.view addSubview:textBar];
 }
 ```
-3. KSBTextbar has already button action. So you have to register notification in your controller.
+* KSBTextbar has already button action. So you have to register notification in your controller.
 
 ```
 
@@ -46,7 +46,7 @@ Usage
 }
 ```
 
-4. If textview in the KSBTextbar object has focus, keyboard will show. Otherwise, keyboard will hide. 
+* If textview in the KSBTextbar object has focus, keyboard will show. Otherwise, keyboard will hide. 
    So you have to change the KSBTextBar object's offset. Please register notification related with UIKeyboard.
 
 ```
