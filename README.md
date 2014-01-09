@@ -12,12 +12,15 @@ Usage
 ```
 #define barHeight 48;
 
+- (void)viewDidUnLoad {
+
 //...
 
-KSBTextbar *textBar = [[KSBTextbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-barHeight, self.view.frame.size.width, barHeight)];
-textBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-//    [textBar setMaxLine:4];
-[self.view addSubview:textBar];
+  KSBTextbar *textBar = [[KSBTextbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-barHeight, self.view.frame.size.width, barHeight)];
+  textBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+  //    [textBar setMaxLine:4];
+  [self.view addSubview:textBar];
+}
 ```
 3. KSBTextbar has already button action. So you have to register notification in your controller.
 
