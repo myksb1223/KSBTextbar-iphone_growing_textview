@@ -69,16 +69,21 @@
     tv.text = @"";
 }
 
-- (void)setMaxLine:(int)aMaxLine {
-    self.maxLine = aMaxLine;
-}
-
 - (void)upBtnPressed:(id)sender {
     // Send notification to your controller
     [[NSNotificationCenter defaultCenter] postNotificationName:@"upBtnPressed" object:nil];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
+    if(num > 1) {
+        defaultY = self.frame.origin.y + (GAP*(num-1));
+    }
+    else {
+        defaultY = self.frame.origin.y;
+    }
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
     if(num > 1) {
         defaultY = self.frame.origin.y + (GAP*(num-1));
     }

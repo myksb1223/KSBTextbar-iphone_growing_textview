@@ -68,8 +68,8 @@
     [gesture release];
     
     textBar = [[KSBTextbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-barHeight, self.view.frame.size.width, barHeight)];
-//    textBar.tintColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1];
     textBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+//    [textBar setMaxLine:4];
     [self.view addSubview:textBar];
     
 }
